@@ -108,6 +108,23 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   transform: translateY(-2px);
 }
 .btn--full { width: 100%; justify-content: center; }
+.btn--whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: #25D366;
+  color: #fff;
+  padding: 18px 32px;
+  border-radius: var(--r-sm);
+  font-family: var(--f-body);
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.2s;
+}
+.btn--whatsapp:hover { background: #1ebe5d; transform: translateY(-2px); }
+.btn-whatsapp-icon { width: 22px; height: 22px; flex-shrink: 0; }
+.contact__whatsapp { display: flex; flex-direction: column; gap: 16px; justify-content: center; }
 
 /* ── NAV ── */
 .nav {
@@ -755,12 +772,13 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   align-items: center;
   gap: 16px;
 }
-.testimonial-card__avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  overflow: hidden;
-  flex-shrink: 0;
+.testimonial-card__author::before {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 2px;
+  background: var(--accent-lt);
+  margin-bottom: 4px;
 }
 .testimonial-card__author strong {
   display: block;

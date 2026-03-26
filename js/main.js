@@ -73,31 +73,6 @@ function scheduleAutoSlide() {
 }
 scheduleAutoSlide();
 
-// ── CONTACT FORM (demo) ──
-const form = document.getElementById('contactForm');
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const btn = form.querySelector('button[type=submit]');
-  const btnText = btn.querySelector('.btn-text');
-  const btnArrow = btn.querySelector('.btn-arrow');
-
-  btn.disabled = true;
-  btnText.textContent = 'Enviando...';
-  btnArrow.textContent = '';
-
-  setTimeout(() => {
-    btnText.textContent = 'Mensagem enviada!';
-    btnArrow.textContent = '';
-    btn.style.background = '#1a7a3a';
-    form.reset();
-    setTimeout(() => {
-      btnText.textContent = 'Enviar mensagem';
-      btnArrow.textContent = '→';
-      btn.style.background = '';
-      btn.disabled = false;
-    }, 3000);
-  }, 1400);
-});
 
 // ══════════════════════════════════════════════
 // ── HERO SCROLL-SCRUBBING VIDEO ──
