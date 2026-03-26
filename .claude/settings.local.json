@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s -o /dev/null -w \"HTML:%{http_code}\" http://localhost:3000/)",
+      "Bash(curl -s -H \"Range: bytes=0-1023\" -o /dev/null -w \" Video-Range:%{http_code}\" http://localhost:3000/video/camera.mp4)",
+      "Bash(netstat -ano)",
+      "Bash(python3 -m pip install imageio-ffmpeg --quiet)",
+      "Bash(python3 -c \"import imageio_ffmpeg; print\\(imageio_ffmpeg.get_ffmpeg_exe\\(\\)\\)\")"
+    ]
+  }
+}
