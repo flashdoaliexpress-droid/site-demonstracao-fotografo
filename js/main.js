@@ -180,76 +180,52 @@ form.addEventListener('submit', (e) => {
   }, { passive: true });
 })();
 
-// ── MOBILE CAMERA PIN ──
-// When the camera section enters the viewport on mobile:
-//   1. Lock scroll (body fixed)
-//   2. Auto-play the video
-//   3. Unlock scroll when video ends
+// ── MOBILE CAMERA SCROLL-SCRUB ──
+// Same scroll-scrubbing mechanic as desktop but inside the tall wrapper.
+// The section is taller than the viewport (height set by JS = 100dvh + dur*PX_PER_SECOND).
+// position:sticky keeps the video pinned while the user scrolls through the extra height.
 (function initMobileCameraPin() {
   if (window.innerWidth > 768) return;
 
-  const section = document.getElementById('cameraMobPin');
-  const video   = document.getElementById('cameraVideoMob');
-  const bar     = document.getElementById('cameraMobBar');
+  const wrap  = document.getElementById('cameraMobPin');
+  const video = document.getElementById('cameraVideoMob');
+  const bar   = document.getElementById('cameraMobBar');
 
-  if (!section || !video) return;
+  if (!wrap || !video) return;
 
-  let locked = false;
-  let savedScrollY = 0;
+  const PX_PER_SECOND = 350;
+  let isReady = false;
 
-  function lockScroll() {
-    savedScrollY = window.scrollY;
-    document.body.style.position = 'fixed';
-    document.body.style.top      = `-${savedScrollY}px`;
-    document.body.style.width    = '100%';
-    locked = true;
+  function setup() {
+    const dur = video.duration;
+    if (!isFinite(dur) || dur <= 0 || isReady) return;
+    isReady = true;
+
+    // Make the wrapper tall enough to scrub through the full video
+    wrap.style.height = `${window.innerHeight + dur * PX_PER_SECOND}px`;
+
+    // Unlock seeking
+    video.play().then(() => { video.pause(); video.currentTime = 0; }).catch(() => { video.currentTime = 0; });
   }
 
-  function unlockScroll() {
-    document.body.style.position = '';
-    document.body.style.top      = '';
-    document.body.style.width    = '';
-    window.scrollTo(0, savedScrollY);
-    locked = false;
-  }
-
-  // Progress bar while playing
-  video.addEventListener('timeupdate', () => {
-    if (!video.duration) return;
-    bar.style.width = `${(video.currentTime / video.duration) * 100}%`;
+  ['loadedmetadata', 'loadeddata', 'canplay'].forEach(evt => {
+    video.addEventListener(evt, setup, { once: true });
   });
+  if (video.readyState >= 1) setup();
+  setTimeout(() => { if (!isReady) setup(); }, 1000);
 
-  // Unlock when video finishes
-  video.addEventListener('ended', () => {
-    unlockScroll();
-    // Scroll past the section so it doesn't re-trigger
-    window.scrollTo({ top: section.offsetTop + section.offsetHeight + 1, behavior: 'instant' });
-  });
+  window.addEventListener('resize', () => {
+    if (!isReady || !isFinite(video.duration)) return;
+    wrap.style.height = `${window.innerHeight + video.duration * PX_PER_SECOND}px`;
+  }, { passive: true });
 
-  // Observe section entering viewport
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting && !locked) {
-        lockScroll();
-        video.currentTime = 0;
-        bar.style.width = '0%';
-        const playPromise = video.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(() => {
-            // Autoplay blocked — show tap-to-play overlay
-            const overlay = document.createElement('div');
-            overlay.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;';
-            overlay.innerHTML = '<div style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.5);display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div>';
-            section.appendChild(overlay);
-            overlay.addEventListener('click', () => {
-              video.play();
-              overlay.remove();
-            }, { once: true });
-          });
-        }
-      }
-    });
-  }, { threshold: 0.6 });
-
-  observer.observe(section);
+  window.addEventListener('scroll', () => {
+    if (!isReady) return;
+    const pinTop   = wrap.offsetTop;
+    const scrubPx  = wrap.offsetHeight - window.innerHeight;
+    const scrolled = Math.max(0, window.scrollY - pinTop);
+    const progress = Math.min(scrolled / scrubPx, 1);
+    video.currentTime = progress * video.duration;
+    bar.style.width = `${progress * 100}%`;
+  }, { passive: true });
 })();
