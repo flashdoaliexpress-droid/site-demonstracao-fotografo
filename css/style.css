@@ -1045,6 +1045,50 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   .hero__meta { gap: 16px; }
   .hero__stat-num { font-size: 22px; }
 
-  .hero-pin-wrap { margin-bottom: 100px; }
+  .hero-pin-wrap { margin-bottom: 0; }
+  .hero__camera-zone { display: none !important; }
   .marquee-wrap { margin-top: 0; }
+}
+
+/* ── MOBILE CAMERA PIN SECTION ── */
+.camera-mob-pin {
+  display: none; /* hidden on desktop */
+}
+
+@media (max-width: 768px) {
+  .camera-mob-pin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100dvh;
+    background: #000;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .camera-mob-pin video {
+    width: auto;
+    height: auto;
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    display: block;
+  }
+
+  .camera-mob-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: rgba(255,255,255,0.15);
+  }
+
+  .camera-mob-bar {
+    height: 100%;
+    width: 0%;
+    background: #fff;
+    transition: width 0.1s linear;
+  }
 }

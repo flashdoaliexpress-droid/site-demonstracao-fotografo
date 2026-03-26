@@ -105,6 +105,9 @@ form.addEventListener('submit', (e) => {
 // ══════════════════════════════════════════════
 
 (function initScrollScrub() {
+  // Desktop only — mobile uses initMobileCameraPin below
+  if (window.innerWidth <= 768) return;
+
   const heroPinWrap = document.getElementById('heroPinWrap');
   const video       = document.getElementById('cameraVideo');
   const loader      = document.getElementById('cameraLoader');
@@ -175,4 +178,78 @@ form.addEventListener('submit', (e) => {
     progressBar.style.width = `${progress * 100}%`;
     scrollHint.classList.toggle('visible', scrolled < 8);
   }, { passive: true });
+})();
+
+// ── MOBILE CAMERA PIN ──
+// When the camera section enters the viewport on mobile:
+//   1. Lock scroll (body fixed)
+//   2. Auto-play the video
+//   3. Unlock scroll when video ends
+(function initMobileCameraPin() {
+  if (window.innerWidth > 768) return;
+
+  const section = document.getElementById('cameraMobPin');
+  const video   = document.getElementById('cameraVideoMob');
+  const bar     = document.getElementById('cameraMobBar');
+
+  if (!section || !video) return;
+
+  let locked = false;
+  let savedScrollY = 0;
+
+  function lockScroll() {
+    savedScrollY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top      = `-${savedScrollY}px`;
+    document.body.style.width    = '100%';
+    locked = true;
+  }
+
+  function unlockScroll() {
+    document.body.style.position = '';
+    document.body.style.top      = '';
+    document.body.style.width    = '';
+    window.scrollTo(0, savedScrollY);
+    locked = false;
+  }
+
+  // Progress bar while playing
+  video.addEventListener('timeupdate', () => {
+    if (!video.duration) return;
+    bar.style.width = `${(video.currentTime / video.duration) * 100}%`;
+  });
+
+  // Unlock when video finishes
+  video.addEventListener('ended', () => {
+    unlockScroll();
+    // Scroll past the section so it doesn't re-trigger
+    window.scrollTo({ top: section.offsetTop + section.offsetHeight + 1, behavior: 'instant' });
+  });
+
+  // Observe section entering viewport
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !locked) {
+        lockScroll();
+        video.currentTime = 0;
+        bar.style.width = '0%';
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            // Autoplay blocked — show tap-to-play overlay
+            const overlay = document.createElement('div');
+            overlay.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;';
+            overlay.innerHTML = '<div style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.5);display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div>';
+            section.appendChild(overlay);
+            overlay.addEventListener('click', () => {
+              video.play();
+              overlay.remove();
+            }, { once: true });
+          });
+        }
+      }
+    });
+  }, { threshold: 0.6 });
+
+  observer.observe(section);
 })();
