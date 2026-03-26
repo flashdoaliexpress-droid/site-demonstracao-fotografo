@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sua Marca — Fotógrafo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="nav__logo">
+      <span class="nav__logo-name">Sua Marca</span>
+      <span class="nav__logo-dot"></span>
+    </div>
+    <ul class="nav__links">
+      <li><a href="#portfolio">Portfólio</a></li>
+      <li><a href="#servicos">Serviços</a></li>
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#contato" class="nav__cta">Contato</a></li>
+    </ul>
+    <button class="nav__hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="nav__mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="#portfolio" class="mobile-link">Portfólio</a></li>
+      <li><a href="#servicos" class="mobile-link">Serviços</a></li>
+      <li><a href="#sobre" class="mobile-link">Sobre</a></li>
+      <li><a href="#contato" class="mobile-link">Contato</a></li>
+    </ul>
+  </div>
+
+  <!-- HERO PIN WRAPPER — scroll scrubbing -->
+  <div class="hero-pin-wrap" id="heroPinWrap">
+  <section class="hero" id="hero">
+    <div class="hero__bg-img" aria-hidden="true"></div>
+    <div class="hero__content">
+      <div class="hero__text">
+        <p class="hero__eyebrow">Fotógrafo Editorial &amp; Retratos</p>
+        <h1 class="hero__headline">
+          Cada<br />
+          <em>frame</em><br />
+          conta uma<br />
+          história.
+        </h1>
+        <p class="hero__sub">
+          Capturo momentos que transcendem o tempo — com técnica precisa e um olhar que transforma o ordinário em extraordinário.
+        </p>
+        <div class="hero__actions">
+          <a href="#portfolio" class="btn btn--primary">Ver Portfólio</a>
+          <a href="#contato" class="btn btn--ghost">Agendar Sessão</a>
+        </div>
+        <!-- stats visíveis no desktop dentro do texto -->
+        <div class="hero__meta hero__meta--desktop">
+          <div class="hero__stat">
+            <span class="hero__stat-num">340+</span>
+            <span class="hero__stat-label">Ensaios</span>
+          </div>
+          <div class="hero__divider"></div>
+          <div class="hero__stat">
+            <span class="hero__stat-num">8</span>
+            <span class="hero__stat-label">Anos de experiência</span>
+          </div>
+          <div class="hero__divider"></div>
+          <div class="hero__stat">
+            <span class="hero__stat-num">12</span>
+            <span class="hero__stat-label">Prêmios</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CAMERA VIDEO ZONE -->
+      <div class="hero__camera-zone" id="cameraZone">
+        <div class="camera-video-wrap">
+          <video
+            id="cameraVideo"
+            src="video/camera.mp4"
+            muted
+            playsinline
+            preload="auto"
+            class="camera-video"
+          ></video>
+          <div class="camera-video-loader" id="cameraLoader">
+            <div class="camera-video-loader__ring"></div>
+          </div>
+        </div>
+        <!-- Scroll hint -->
+        <div class="scroll-hint" id="scrollHint">
+          <span>Role para revelar</span>
+          <div class="scroll-hint__arrow"></div>
+        </div>
+      </div>
+
+      <!-- stats visíveis apenas no mobile, após a câmera -->
+      <div class="hero__meta hero__meta--mobile">
+        <div class="hero__stat">
+          <span class="hero__stat-num">340+</span>
+          <span class="hero__stat-label">Ensaios</span>
+        </div>
+        <div class="hero__divider"></div>
+        <div class="hero__stat">
+          <span class="hero__stat-num">8</span>
+          <span class="hero__stat-label">Anos de experiência</span>
+        </div>
+        <div class="hero__divider"></div>
+        <div class="hero__stat">
+          <span class="hero__stat-num">12</span>
+          <span class="hero__stat-label">Prêmios</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="hero__scroll">
+      <span>Rolar</span>
+      <div class="hero__scroll-line"></div>
+    </div>
+  </section>
+  </div><!-- /hero-pin-wrap -->
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span>Retratos</span><span class="marquee-dot">·</span>
+      <span>Editorial</span><span class="marquee-dot">·</span>
+      <span>Casamentos</span><span class="marquee-dot">·</span>
+      <span>Corporativo</span><span class="marquee-dot">·</span>
+      <span>Moda</span><span class="marquee-dot">·</span>
+      <span>Arquitetura</span><span class="marquee-dot">·</span>
+      <span>Retratos</span><span class="marquee-dot">·</span>
+      <span>Editorial</span><span class="marquee-dot">·</span>
+      <span>Casamentos</span><span class="marquee-dot">·</span>
+      <span>Corporativo</span><span class="marquee-dot">·</span>
+      <span>Moda</span><span class="marquee-dot">·</span>
+      <span>Arquitetura</span><span class="marquee-dot">·</span>
+    </div>
+  </div>
+
+  <!-- PORTFOLIO -->
+  <section class="portfolio" id="portfolio">
+    <div class="section-header">
+      <p class="section-eyebrow">Trabalhos Selecionados</p>
+      <h2 class="section-title">Portfólio</h2>
+    </div>
+
+    <div class="portfolio__grid">
+      <!-- Item 1 — largura total -->
+      <div class="portfolio__item portfolio__item--full reveal">
+        <div class="portfolio__img-wrap">
+          <img src="assets/Portifolio.png" alt="Chapada rochosa com flores ao entardecer" loading="lazy" />
+          <div class="portfolio__overlay">
+            <span class="portfolio__cat">Paisagem</span>
+            <h3 class="portfolio__title">Chapada ao Entardecer</h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 2 — metade esquerda -->
+      <div class="portfolio__item reveal">
+        <div class="portfolio__img-wrap">
+          <img src="assets/Portifolio (2).png" alt="Vista aérea de cachoeira em paredão rochoso" loading="lazy" />
+          <div class="portfolio__overlay">
+            <span class="portfolio__cat">Natureza</span>
+            <h3 class="portfolio__title">Queda Livre</h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 3 — metade direita -->
+      <div class="portfolio__item reveal">
+        <div class="portfolio__img-wrap">
+          <img src="assets/Portifolio (3).png" alt="Trilheiro caminhando em mata fechada com musgos" loading="lazy" />
+          <div class="portfolio__overlay">
+            <span class="portfolio__cat">Aventura</span>
+            <h3 class="portfolio__title">Entre a Mata</h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 4 — largura total -->
+      <div class="portfolio__item portfolio__item--full reveal">
+        <div class="portfolio__img-wrap">
+          <img src="assets/Portifolio (4).png" alt="Silhuetas de dois exploradores no rio com montanha ao fundo" loading="lazy" />
+          <div class="portfolio__overlay">
+            <span class="portfolio__cat">Aventura</span>
+            <h3 class="portfolio__title">Os Exploradores</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="portfolio__more">
+      <a href="#contato" class="btn btn--outline">Ver todos os trabalhos →</a>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="servicos">
+    <div class="services__inner">
+      <div class="services__left">
+        <p class="section-eyebrow">O que ofereço</p>
+        <h2 class="section-title section-title--left">Serviços<br /><em>personalizados</em></h2>
+        <p class="services__desc">
+          Cada projeto é tratado como único. Da concepção criativa à entrega final, trabalho próximo a você para capturar exatamente o que você precisa.
+        </p>
+        <a href="#contato" class="btn btn--primary">Solicitar orçamento</a>
+      </div>
+
+      <div class="services__list">
+        <div class="service-item reveal">
+          <div class="service-item__num">01</div>
+          <div class="service-item__content">
+            <h3>Retratos &amp; Editorial</h3>
+            <p>Ensaios individuais, familiares e editoriais com direção criativa completa, locação e tratamento profissional.</p>
+            <span class="service-item__price">a partir de R$800</span>
+          </div>
+        </div>
+        <div class="service-item reveal">
+          <div class="service-item__num">02</div>
+          <div class="service-item__content">
+            <h3>Casamentos &amp; Eventos</h3>
+            <p>Cobertura completa do seu dia especial, do making of à festa. Entrega de álbum impresso e galeria digital.</p>
+            <span class="service-item__price">a partir de R$3.500</span>
+          </div>
+        </div>
+        <div class="service-item reveal">
+          <div class="service-item__num">03</div>
+          <div class="service-item__content">
+            <h3>Corporativo &amp; Marca</h3>
+            <p>Fotos institucionais, headshots executivos, produto e conteúdo para redes sociais e materiais de marketing.</p>
+            <span class="service-item__price">a partir de R$1.200</span>
+          </div>
+        </div>
+        <div class="service-item reveal">
+          <div class="service-item__num">04</div>
+          <div class="service-item__content">
+            <h3>Arquitetura &amp; Interiores</h3>
+            <p>Fotografias técnicas e artísticas de espaços para arquitetos, incorporadoras e escritórios de design.</p>
+            <span class="service-item__price">a partir de R$1.800</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="sobre">
+    <div class="about__inner">
+      <div class="about__img-col reveal">
+        <div class="about__img-wrap">
+          <img src="assets/Principal OBSSECADO PELA LUZ.png" alt="Fotógrafo em ação" />
+          <div class="about__img-badge">
+            <span>São Paulo, Brasil</span>
+          </div>
+        </div>
+        <div class="about__img-secondary">
+          <img src="assets/Secundaria OBSSECADO PELA LUZ.png" alt="Equipamento fotográfico" />
+        </div>
+      </div>
+
+      <div class="about__text-col">
+        <p class="section-eyebrow">Quem sou</p>
+        <h2 class="section-title section-title--left">Obcecado<br />pela <em>luz perfeita</em></h2>
+        <p class="about__p">
+          Fotógrafo baseado em São Paulo com 8 anos de experiência em fotografia de natureza, aventura e documentação de momentos únicos ao ar livre.
+        </p>
+        <p class="about__p">
+          Minha abordagem combina técnica rigorosa com sensibilidade artística. Acredito que as melhores fotografias acontecem quando há confiança mútua entre fotógrafo e cliente — por isso dedico tempo para entender sua visão antes de qualquer clique.
+        </p>
+        <div class="about__credentials">
+          <div class="credential">
+            <span class="credential__icon">◈</span>
+            <span>Nikon Ambassador desde 2021</span>
+          </div>
+          <div class="credential">
+            <span class="credential__icon">◈</span>
+            <span>Publicado em Vogue Brasil, Elle, Casa Claudia</span>
+          </div>
+          <div class="credential">
+            <span class="credential__icon">◈</span>
+            <span>Premiado pela ABRAF — 3× consecutivo</span>
+          </div>
+        </div>
+        <a href="#contato" class="btn btn--ghost">Conheça minha história →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <div class="testimonials__inner">
+      <p class="section-eyebrow">O que dizem</p>
+      <h2 class="section-title">Depoimentos</h2>
+
+      <div class="testimonials__track-wrap">
+        <div class="testimonials__track" id="testimonialsTrack">
+          <div class="testimonial-card">
+            <div class="testimonial-card__stars">★★★★★</div>
+            <blockquote>
+              "Lucas capturou exatamente a essência do nosso casamento. As fotos são tão belas que parecem pinturas. Cada imagem conta uma história diferente do nosso dia."
+            </blockquote>
+            <div class="testimonial-card__author">
+              <div class="testimonial-card__avatar">
+                <img src="https://images.unsplash.com/photo-1494790108755-2616b612b5bc?w=80&q=80" alt="Ana Clara" />
+              </div>
+              <div>
+                <strong>Ana Clara &amp; Marcos</strong>
+                <span>Casamento — Junho 2024</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-card">
+            <div class="testimonial-card__stars">★★★★★</div>
+            <blockquote>
+              "Precisava de fotos corporativas que transmitissem autoridade e confiança. O resultado foi além do esperado — os headshots transformaram minha presença no LinkedIn."
+            </blockquote>
+            <div class="testimonial-card__author">
+              <div class="testimonial-card__avatar">
+                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&q=80" alt="Roberto Fonseca" />
+              </div>
+              <div>
+                <strong>Roberto Fonseca</strong>
+                <span>CEO — Fonseca Ventures</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-card">
+            <div class="testimonial-card__stars">★★★★★</div>
+            <blockquote>
+              "A direção criativa do Lucas é impecável. Trabalhar com ele foi uma experiência completa — do conceito à entrega, tudo foi tratado com extremo profissionalismo."
+            </blockquote>
+            <div class="testimonial-card__author">
+              <div class="testimonial-card__avatar">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&q=80" alt="Fernanda Rios" />
+              </div>
+              <div>
+                <strong>Fernanda Rios</strong>
+                <span>Diretora Criativa — Studio FR</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonials__dots" id="testimonialsNav">
+        <button class="tdot active" data-idx="0"></button>
+        <button class="tdot" data-idx="1"></button>
+        <button class="tdot" data-idx="2"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contato">
+    <div class="contact__inner">
+      <div class="contact__text">
+        <p class="section-eyebrow">Vamos trabalhar juntos</p>
+        <h2 class="section-title section-title--left">Pronto para<br /><em>criar algo</em><br />incrível?</h2>
+        <p class="contact__sub">Preencha o formulário ou entre em contato diretamente. Respondo em até 24 horas.</p>
+        <div class="contact__socials">
+          <a href="#" class="contact__social-link">Instagram</a>
+          <a href="#" class="contact__social-link">Behance</a>
+          <a href="#" class="contact__social-link">LinkedIn</a>
+        </div>
+        <p class="contact__email">lucas@lucasmeira.com.br</p>
+      </div>
+
+      <form class="contact__form" id="contactForm" novalidate>
+        <div class="form-group">
+          <label for="nome">Nome completo</label>
+          <input type="text" id="nome" name="nome" placeholder="Seu nome" required />
+        </div>
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" name="email" placeholder="seu@email.com" required />
+        </div>
+        <div class="form-group">
+          <label for="servico">Tipo de serviço</label>
+          <select id="servico" name="servico">
+            <option value="">Selecione...</option>
+            <option value="retrato">Retratos &amp; Editorial</option>
+            <option value="casamento">Casamento &amp; Eventos</option>
+            <option value="corporativo">Corporativo &amp; Marca</option>
+            <option value="arquitetura">Arquitetura &amp; Interiores</option>
+            <option value="outro">Outro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="mensagem">Mensagem</label>
+          <textarea id="mensagem" name="mensagem" rows="4" placeholder="Conte um pouco sobre seu projeto..."></textarea>
+        </div>
+        <button type="submit" class="btn btn--primary btn--full">
+          <span class="btn-text">Enviar mensagem</span>
+          <span class="btn-arrow">→</span>
+        </button>
+        <p class="form-note">* Suas informações são tratadas com total privacidade.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <span class="footer__name">Sua Marca</span>
+        <span class="footer__tagline">Fotógrafo — São Paulo</span>
+      </div>
+      <nav class="footer__nav">
+        <a href="#portfolio">Portfólio</a>
+        <a href="#servicos">Serviços</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#contato">Contato</a>
+      </nav>
+      <p class="footer__copy">© 2025 Sua Marca. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
