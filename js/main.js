@@ -181,41 +181,56 @@ form.addEventListener('submit', (e) => {
 })();
 
 // ── MOBILE CAMERA SCROLL-SCRUB ──
-// Same scroll-scrubbing mechanic as desktop but inside the tall wrapper.
-// The section is taller than the viewport (height set by JS = 100dvh + dur*PX_PER_SECOND).
-// position:sticky keeps the video pinned while the user scrolls through the extra height.
 (function initMobileCameraPin() {
   if (window.innerWidth > 768) return;
 
-  const wrap  = document.getElementById('cameraMobPin');
-  const video = document.getElementById('cameraVideoMob');
-  const bar   = document.getElementById('cameraMobBar');
+  const wrap   = document.getElementById('cameraMobPin');
+  const video  = document.getElementById('cameraVideoMob');
+  const bar    = document.getElementById('cameraMobBar');
+  const loader = document.getElementById('cameraMobLoader');
 
   if (!wrap || !video) return;
 
   const PX_PER_SECOND = 350;
-  let isReady = false;
+  let isReady  = false;
+  let buffered = false;
 
-  function setup() {
+  // Step 1: metadata loaded → set wrapper height
+  function onMetadata() {
     const dur = video.duration;
-    if (!isFinite(dur) || dur <= 0 || isReady) return;
-    isReady = true;
-
-    // Make the wrapper tall enough to scrub through the full video
+    if (!isFinite(dur) || dur <= 0) return;
     wrap.style.height = `${window.innerHeight + dur * PX_PER_SECOND}px`;
-
-    // Unlock seeking
+    // Trigger full download immediately
     video.play().then(() => { video.pause(); video.currentTime = 0; }).catch(() => { video.currentTime = 0; });
+    waitForBuffer();
   }
 
-  ['loadedmetadata', 'loadeddata', 'canplay'].forEach(evt => {
-    video.addEventListener(evt, setup, { once: true });
+  // Step 2: poll until the entire video is buffered, then allow scrubbing
+  function waitForBuffer() {
+    function check() {
+      const dur = video.duration;
+      if (!isFinite(dur)) return;
+      // Check if buffered range covers the full duration
+      const b = video.buffered;
+      const fullyBuffered = b.length > 0 && b.end(b.length - 1) >= dur - 0.1;
+      if (fullyBuffered) {
+        buffered = true;
+        isReady  = true;
+        if (loader) loader.classList.add('hidden');
+      } else {
+        setTimeout(check, 200);
+      }
+    }
+    check();
+  }
+
+  ['loadedmetadata', 'loadeddata'].forEach(evt => {
+    video.addEventListener(evt, onMetadata, { once: true });
   });
-  if (video.readyState >= 1) setup();
-  setTimeout(() => { if (!isReady) setup(); }, 1000);
+  if (video.readyState >= 1) onMetadata();
 
   window.addEventListener('resize', () => {
-    if (!isReady || !isFinite(video.duration)) return;
+    if (!isFinite(video.duration)) return;
     wrap.style.height = `${window.innerHeight + video.duration * PX_PER_SECOND}px`;
   }, { passive: true });
 
@@ -230,7 +245,7 @@ form.addEventListener('submit', (e) => {
       const scrolled = Math.max(0, window.scrollY - pinTop);
       const progress = Math.min(scrolled / scrubPx, 1);
       video.currentTime = progress * video.duration;
-      bar.style.width = `${progress * 100}%`;
+      bar.style.width   = `${progress * 100}%`;
     });
   }, { passive: true });
 })();

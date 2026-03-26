@@ -1082,6 +1082,30 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     display: block;
   }
 
+  .camera-mob-loader {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+    transition: opacity 0.3s;
+    z-index: 2;
+  }
+  .camera-mob-loader.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .camera-mob-spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid var(--accent-lt);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: mob-spin 0.8s linear infinite;
+  }
+  @keyframes mob-spin { to { transform: rotate(360deg); } }
+
   .camera-mob-progress {
     position: absolute;
     bottom: 0;
@@ -1089,6 +1113,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     width: 100%;
     height: 3px;
     background: rgba(0,0,0,0.1);
+    z-index: 3;
   }
 
   .camera-mob-bar {
