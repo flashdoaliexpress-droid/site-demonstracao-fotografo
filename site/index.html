@@ -128,9 +128,10 @@
   <!-- MOBILE CAMERA SECTION (hidden on desktop) -->
   <div class="camera-mob-pin" id="cameraMobPin">
     <div class="camera-mob-sticky">
-      <video id="cameraVideoMob" src="video/camera-mobile.mp4" muted playsinline preload="auto"></video>
+      <canvas id="cameraCanvas" width="720" height="720"></canvas>
       <div class="camera-mob-loader" id="cameraMobLoader">
         <div class="camera-mob-spinner"></div>
+        <span class="camera-mob-loader-pct" id="cameraMobPct">0%</span>
       </div>
       <div class="camera-mob-progress"><div class="camera-mob-bar" id="cameraMobBar"></div></div>
     </div>

@@ -180,63 +180,57 @@ form.addEventListener('submit', (e) => {
   }, { passive: true });
 })();
 
-// ── MOBILE CAMERA SCROLL-SCRUB ──
+// ── MOBILE CAMERA SCROLL-SCRUB (canvas frame sequence) ──
+// Loads pre-extracted JPEG frames and draws them on <canvas>.
+// Zero video-decode latency — GPU-accelerated drawImage, perfectly smooth.
 (function initMobileCameraPin() {
   if (window.innerWidth > 768) return;
 
   const wrap   = document.getElementById('cameraMobPin');
-  const video  = document.getElementById('cameraVideoMob');
+  const canvas = document.getElementById('cameraCanvas');
   const bar    = document.getElementById('cameraMobBar');
   const loader = document.getElementById('cameraMobLoader');
+  const pct    = document.getElementById('cameraMobPct');
 
-  if (!wrap || !video) return;
+  if (!wrap || !canvas) return;
 
+  const FRAME_COUNT   = 121;   // total frames extracted by extract_frames.py
+  const FPS           = 24;
   const PX_PER_SECOND = 350;
-  let isReady  = false;
-  let buffered = false;
+  const ctx           = canvas.getContext('2d');
 
-  // Step 1: metadata loaded → set wrapper height
-  function onMetadata() {
-    const dur = video.duration;
-    if (!isFinite(dur) || dur <= 0) return;
+  const frames = new Array(FRAME_COUNT);
+  let loadedCount = 0;
+  let lastIdx = -1;
+
+  function onAllLoaded() {
+    const dur = FRAME_COUNT / FPS;
     wrap.style.height = `${window.innerHeight + dur * PX_PER_SECOND}px`;
-    // Trigger full download immediately
-    video.play().then(() => { video.pause(); video.currentTime = 0; }).catch(() => { video.currentTime = 0; });
-    waitForBuffer();
+    loader.classList.add('hidden');
+    // Draw first frame immediately
+    ctx.drawImage(frames[0], 0, 0, canvas.width, canvas.height);
   }
 
-  // Step 2: poll until the entire video is buffered, then allow scrubbing
-  function waitForBuffer() {
-    function check() {
-      const dur = video.duration;
-      if (!isFinite(dur)) return;
-      // Check if buffered range covers the full duration
-      const b = video.buffered;
-      const fullyBuffered = b.length > 0 && b.end(b.length - 1) >= dur - 0.1;
-      if (fullyBuffered) {
-        buffered = true;
-        isReady  = true;
-        if (loader) loader.classList.add('hidden');
-      } else {
-        setTimeout(check, 200);
-      }
-    }
-    check();
+  for (let i = 0; i < FRAME_COUNT; i++) {
+    const img = new Image();
+    const num = String(i + 1).padStart(4, '0');
+    img.src = `video/frames/f${num}.jpg`;
+    img.onload = () => {
+      loadedCount++;
+      if (pct) pct.textContent = Math.round((loadedCount / FRAME_COUNT) * 100) + '%';
+      if (loadedCount === FRAME_COUNT) onAllLoaded();
+    };
+    frames[i] = img;
   }
-
-  ['loadedmetadata', 'loadeddata'].forEach(evt => {
-    video.addEventListener(evt, onMetadata, { once: true });
-  });
-  if (video.readyState >= 1) onMetadata();
 
   window.addEventListener('resize', () => {
-    if (!isFinite(video.duration)) return;
-    wrap.style.height = `${window.innerHeight + video.duration * PX_PER_SECOND}px`;
+    const dur = FRAME_COUNT / FPS;
+    wrap.style.height = `${window.innerHeight + dur * PX_PER_SECOND}px`;
   }, { passive: true });
 
   let rafPending = false;
   window.addEventListener('scroll', () => {
-    if (!isReady || rafPending) return;
+    if (loadedCount < FRAME_COUNT || rafPending) return;
     rafPending = true;
     requestAnimationFrame(() => {
       rafPending = false;
@@ -244,8 +238,12 @@ form.addEventListener('submit', (e) => {
       const scrubPx  = wrap.offsetHeight - window.innerHeight;
       const scrolled = Math.max(0, window.scrollY - pinTop);
       const progress = Math.min(scrolled / scrubPx, 1);
-      video.currentTime = progress * video.duration;
-      bar.style.width   = `${progress * 100}%`;
+      const idx      = Math.min(Math.floor(progress * FRAME_COUNT), FRAME_COUNT - 1);
+      if (idx !== lastIdx) {
+        ctx.drawImage(frames[idx], 0, 0, canvas.width, canvas.height);
+        lastIdx = idx;
+      }
+      bar.style.width = `${progress * 100}%`;
     });
   }, { passive: true });
 })();
