@@ -219,13 +219,18 @@ form.addEventListener('submit', (e) => {
     wrap.style.height = `${window.innerHeight + video.duration * PX_PER_SECOND}px`;
   }, { passive: true });
 
+  let rafPending = false;
   window.addEventListener('scroll', () => {
-    if (!isReady) return;
-    const pinTop   = wrap.offsetTop;
-    const scrubPx  = wrap.offsetHeight - window.innerHeight;
-    const scrolled = Math.max(0, window.scrollY - pinTop);
-    const progress = Math.min(scrolled / scrubPx, 1);
-    video.currentTime = progress * video.duration;
-    bar.style.width = `${progress * 100}%`;
+    if (!isReady || rafPending) return;
+    rafPending = true;
+    requestAnimationFrame(() => {
+      rafPending = false;
+      const pinTop   = wrap.offsetTop;
+      const scrubPx  = wrap.offsetHeight - window.innerHeight;
+      const scrolled = Math.max(0, window.scrollY - pinTop);
+      const progress = Math.min(scrolled / scrubPx, 1);
+      video.currentTime = progress * video.duration;
+      bar.style.width = `${progress * 100}%`;
+    });
   }, { passive: true });
 })();
